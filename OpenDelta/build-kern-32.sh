@@ -65,7 +65,7 @@ OBJS=(
 )
 
 function base_actions {
-    cd ~/open-delta/code/kernel/
+    cd ~/OpenDelta/code/kernel/
     if [! -d "./img/" ]; then
         mkdir -p ./img/
     elif [! -d "./obj/" ]; then
