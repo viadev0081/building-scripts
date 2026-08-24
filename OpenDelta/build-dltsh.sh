@@ -1,20 +1,37 @@
-#!/usr/bin/bash
+#!/usr/bin/env bash
 
-function build-dltsh {
-    mkdir -p ~/OpenDelta/shell/bin 
+C_SOURCES=(
+    src/term.c
+    src/commands.c
+    src/files.c
+    src/dltsh.c
+    src/editor.c
+    src/simple_comms.c
+)
 
-    clang ~/OpenDelta/shell/src/term.c \ 
-            ~/OpenDelta/shell/src/files.c \ 
-            ~/OpenDelta/shell/src/commands.c \
-            ~/OpenDelta/shell/src/simple_comms.c \ 
-            ~/OpenDelta/shell/src/dltsh.c \ 
-            -o ~/OpenDelta/bin/dltsh
-    
-    clang++ ~/OpenDelta/shell/src/help_table.cpp -o bin/table -lncursesw
+if [ ! -d "~/OpenDelta/code/shell/bin" ]; then
+    mkdir -p ~/OpenDelta/code/shell/bin
+fi
 
-    rustc ~/OpenDelta/shell/src/clocks.rs -o ~/OpenDelta/shell/bin/clocks
-    rustc ~/OpenDelta/shell/src/calc.rs -o ~/OpenDelta/shell/bin/calc
-    rustc ~/OpenDelta/shell/src/dexide.rs -o ~/OpenDelta/shell/bin/dexide
+function build {
+    cd ~/OpenDelta/code/shell/
+    clang "${C_SOURCES[@]}" -o ./bin/dltsh
+    clang++ src/help_table.cpp -o ./bin/table -lncursesw
+    rustc src/dexide.rs -o ./bin/dexide
+    rustc src/calc.rs -o ./bin/calc
+    rustc src/clocks.rs -o ./bin/clocks
 }
 
-build-dltsh
+function run {
+    ./bin/dltsh
+}
+
+function clean {
+    rm -f ./bin/dltsh
+    rm -f ./bin/table
+    rm -f ./bin/dexide
+    rm -f ./bin/calc
+    rm -f ./bin/clocks
+}
+
+build && run
