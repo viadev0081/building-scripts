@@ -18,5 +18,3 @@ function build {
     clang++ "${CXX_FLAGS[@]}" "${SOURCES[@]}" -o bin/cs -lncursesw || exit 1
     bin/cs
 }
-
-build
